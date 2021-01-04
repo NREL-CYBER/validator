@@ -119,12 +119,16 @@ export default class Validator<T> {
             this.validate = compiledValidator as ValidateFunction<T>;
         }
 
+        // Given a property get the information from 
         const findDefinitionPath = (propertyInfo: any) => {
-            if ("type" in propertyInfo && propertyInfo["type"] == "string") {
+            // just the regular base propertyies
+            if ("type" in propertyInfo && ["string", "boolean", "number"].includes(propertyInfo["type"])) {
                 return propertyInfo;
             }
+            // arrays references objects and more advanced properties
             const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || (propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0])
             if (typeof path !== "string") {
+                console.log(propertyInfo);
                 throw "Invalid Property Info ";
                 return "";
             }
