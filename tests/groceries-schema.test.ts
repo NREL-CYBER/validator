@@ -1,4 +1,4 @@
-import Validator from "../validator"
+import Validator from "../src/validator"
 import * as groceriesSchema from "./schemas/groceries-schema.json"
 
 type Fruit = string;

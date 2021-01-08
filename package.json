@@ -4,7 +4,6 @@
   "description": "Validate JSON Schema7 Definitions",
   "main": "./index.ts",
   "directories": {
-    "test": "tests",
     "src": "src"
   },
   "dependencies": {

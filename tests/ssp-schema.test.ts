@@ -1,4 +1,4 @@
-import Validator from "../validator"
+import Validator from "../src/validator"
 import * as sspSchema from "./schemas/oscal_ssp_schema.json"
 
 
