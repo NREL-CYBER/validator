@@ -1,49 +1,7 @@
-import Ajv, { SchemaObject, ValidateFunction } from "ajv"
+import Ajv, { ValidateFunction } from "ajv"
 import addFormats from "ajv-formats"
-
-
-interface PropertyInfo {
-    title?: string
-    description?: string
-}
-
-export interface PropertyDefinitionRef extends PropertyInfo {
-    $id?: string,
-    $ref?: string
-    items?: {
-        $ref?: string
-    }
-    allOf?: { not?: string, $ref?: string }[]
-    anyOf?: { not?: string, $ref?: string }[]
-    type?: string
-    multipleOf?: number;
-    minimum?: number;
-}
-
-
-
-export interface RootSchemaObject {
-    $id: string,
-    $comment?: string
-    $schema?: string,
-    title?: string,
-    description?: string,
-    definitions?: Record<string, any>
-    properties: Record<string, any>
-    required?: string[]
-    additionalProperties?: [] | boolean
-}
-
-
-interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
-    properties?: Record<string, PropertyDefinitionRef>
-    type?: string
-    $id: string,
-    format?: string,
-    pattern?: string,
-    $comment?: string
-    additionalProperties?: [] | boolean
-}
+import { RootSchemaObject } from "index"
+import { PropertyDefinitionRef, SchemaObjectDefinition } from "./schema-types"
 
 /**
  * A class to Compile a validation schema 

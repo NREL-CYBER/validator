@@ -1,46 +1,7 @@
-import { SchemaObject, ValidateFunction } from "ajv";
-interface PropertyInfo {
-    title?: string;
-    description?: string;
-}
-export interface PropertyDefinitionRef extends PropertyInfo {
-    $id?: string;
-    $ref?: string;
-    items?: {
-        $ref?: string;
-    };
-    allOf?: {
-        not?: string;
-        $ref?: string;
-    }[];
-    anyOf?: {
-        not?: string;
-        $ref?: string;
-    }[];
-    type?: string;
-    multipleOf?: number;
-    minimum?: number;
-}
-export interface RootSchemaObject {
-    $id: string;
-    $comment?: string;
-    $schema?: string;
-    title?: string;
-    description?: string;
-    definitions?: Record<string, any>;
-    properties: Record<string, any>;
-    required?: string[];
-    additionalProperties?: [] | boolean;
-}
-interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
-    properties?: Record<string, PropertyDefinitionRef>;
-    type?: string;
-    $id: string;
-    format?: string;
-    pattern?: string;
-    $comment?: string;
-    additionalProperties?: [] | boolean;
-}
+import { ValidateFunction } from "ajv";
+import { RootSchemaObject } from "index";
+import { SchemaObjectDefinition } from "./schema-types";
+import { PropertyDefinitionRef } from "lib/validator";
 /**
  * A class to Compile a validation schema
  * into a strongly typed validation function
@@ -90,4 +51,3 @@ export default class Validator<T> {
      */
     constructor(validSchema: RootSchemaObject, definition?: string);
 }
-export {};
