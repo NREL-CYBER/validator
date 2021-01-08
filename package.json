@@ -2,7 +2,8 @@
   "name": "validator",
   "version": "1.1.0",
   "description": "Validate JSON Schema7 Definitions",
-  "main": "./index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "directories": {
     "src": "src"
   },
@@ -22,7 +23,7 @@
   },
   "scripts": {
     "build:types": "tsc --emitDeclarationOnly ",
-    "build": "babel src --out-dir lib --extensions .ts,.tsx",
+    "build": "babel src --out-dir dist --extensions .ts,.tsx",
     "test": "jest"
   },
   "repository": {
