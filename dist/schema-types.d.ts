@@ -32,6 +32,7 @@ export interface RootSchemaObject {
     properties: Record<string, any>;
     required?: string[];
     additionalProperties?: [] | boolean;
+    dependencies: Record<string, string[]>;
 }
 export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     properties?: Record<string, PropertyDefinitionRef>;
