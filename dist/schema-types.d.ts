@@ -26,6 +26,7 @@ export interface RootSchemaObject {
     $comment?: string;
     $schema?: string;
     title?: string;
+    type?: string;
     description?: string;
     definitions?: Record<string, any>;
     properties: Record<string, any>;
