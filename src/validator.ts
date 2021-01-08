@@ -1,6 +1,6 @@
 import Ajv, { ValidateFunction } from "ajv"
 import addFormats from "ajv-formats"
-import { RootSchemaObject } from "index"
+import { RootSchemaObject } from "./schema-types"
 import { PropertyDefinitionRef, SchemaObjectDefinition } from "./schema-types"
 
 /**

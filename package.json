@@ -1,8 +1,8 @@
 {
   "name": "validator",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Validate JSON Schema7 Definitions",
-  "main": "./index.ts",
+  "main": "./index.d.ts",
   "directories": {
     "src": "src"
   },
