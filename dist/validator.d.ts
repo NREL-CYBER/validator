@@ -1,6 +1,5 @@
 import { ValidateFunction } from "ajv";
-import { RootSchemaObject } from "./schema-types";
-import { PropertyDefinitionRef, SchemaObjectDefinition } from "./schema-types";
+import { PropertyDefinitionRef, RootSchemaObject, SchemaObjectDefinition } from "./schema-types";
 /**
  * A class to Compile a validation schema
  * into a strongly typed validation function
