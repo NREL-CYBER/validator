@@ -93,7 +93,7 @@ function Validator(validSchema, definition) {
   this.rootSchema = validSchema;
   var root = validSchema["$id"];
 
-  if (definition) {
+  if (typeof definition === "string") {
     this.definition = root + "#/definitions/" + definition;
     this.schema = this.rootSchema.definitions && this.rootSchema.definitions[definition];
     this.isRootSchema = false;

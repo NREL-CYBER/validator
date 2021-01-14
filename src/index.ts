@@ -100,7 +100,7 @@ export default class Validator<T> {
         this.title = definition || validSchema.$comment || "";
         this.rootSchema = validSchema;
         const root = (validSchema as any)["$id"];
-        if (definition) {
+        if (typeof definition === "string") {
             this.definition = root + "#/definitions/" + definition;
 
             this.schema = this.rootSchema.definitions && this.rootSchema.definitions[definition];
