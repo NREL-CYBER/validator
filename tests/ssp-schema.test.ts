@@ -1,5 +1,6 @@
 import Validator from "../src/validator"
 import * as sspSchema from "./schemas/oscal_ssp_schema.json"
+const snakeCaseKeys = require('snakecase-keys')
 
 
 interface Party {
@@ -25,5 +26,12 @@ test("generates partial data from schema", () => {
     const partialParty = partyValidator.makePartial();
     expect(partialParty.hasOwnProperty("name")).toBeTruthy()
 })
+
+test("generates a partial even for a massive schema", () => {
+    const sspValidator = new Validator<unknown>(sspSchema, "system_security_plan");
+    const partialSSP = sspValidator.makePartial();
+    expect(partialSSP.hasOwnProperty("metadata")).toBeTruthy()
+})
+
 
 
