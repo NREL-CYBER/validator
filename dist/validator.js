@@ -85,9 +85,7 @@ export default class Validator {
       const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0];
 
       if (typeof path !== "string") {
-        console.log(propertyInfo);
-        throw "Invalid Property Info ";
-        return "";
+        return undefined;
       }
 
       return path;
@@ -95,7 +93,7 @@ export default class Validator {
 
     const getDefinitionIndex = definitionPath => {
       if (typeof definitionPath !== "string") {
-        return "";
+        return definitionPath;
       }
 
       return definitionPath.split("/").pop() || "";
