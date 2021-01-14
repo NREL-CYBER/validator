@@ -86,16 +86,14 @@ export default class Validator<T> {
             // arrays references objects and more advanced properties
             const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || (propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0])
             if (typeof path !== "string") {
-                console.log(propertyInfo);
-                throw "Invalid Property Info ";
-                return "";
+                return undefined;
             }
             return path;
         }
 
         const getDefinitionIndex = (definitionPath: string) => {
             if (typeof definitionPath !== "string") {
-                return ""
+                return definitionPath
             }
 
             return definitionPath.split("/").pop() || "";
