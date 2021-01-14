@@ -1,4 +1,4 @@
-import Validator from "../src/validator"
+import Validator from "../dist"
 import * as sspSchema from "./schemas/oscal_ssp_schema.json"
 const snakeCaseKeys = require('snakecase-keys')
 
