@@ -129,6 +129,10 @@ export default class Validator<T> {
             if ("type" in propertyInfo && ["string", "boolean", "number"].includes(propertyInfo["type"])) {
                 return propertyInfo;
             }
+            if (propertyInfo.type === "array" && typeof propertyInfo.items.$ref === "undefined") {
+                return propertyInfo;
+            }
+
             // arrays references objects and more advanced properties
             const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || (propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0])
             if (typeof path !== "string") {
@@ -150,8 +154,11 @@ export default class Validator<T> {
             return this.rootSchema.definitions && this.rootSchema.definitions[definitionIndex] || propertyInfo;
         }
         this.makeReferenceValidator = <RT>(propertyInfo: PropertyDefinitionRef) => {
-            if (typeof propertyInfo.$ref === "undefined") {
-                return new Validator<RT>(propertyInfo);
+            if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
+                const { items } = propertyInfo;
+                if (items) {
+                    return new Validator<RT>(items);
+                }
             }
             const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
             return new Validator<RT>(this.rootSchema, definitionIndex);

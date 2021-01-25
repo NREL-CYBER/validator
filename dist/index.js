@@ -119,6 +119,10 @@ function Validator(validSchema, definition) {
     // just the regular base propertyies
     if ("type" in propertyInfo && ["string", "boolean", "number"].includes(propertyInfo["type"])) {
       return propertyInfo;
+    }
+
+    if (propertyInfo.type === "array" && typeof propertyInfo.items.$ref === "undefined") {
+      return propertyInfo;
     } // arrays references objects and more advanced properties
 
 
@@ -145,8 +149,12 @@ function Validator(validSchema, definition) {
   };
 
   this.makeReferenceValidator = function (propertyInfo) {
-    if (typeof propertyInfo.$ref === "undefined") {
-      return new Validator(propertyInfo);
+    if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
+      var items = propertyInfo.items;
+
+      if (items) {
+        return new Validator(items);
+      }
     }
 
     var definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
