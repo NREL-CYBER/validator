@@ -9,6 +9,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     $ref?: string;
     items?: {
         $ref?: string;
+        type?: string;
     };
     allOf?: {
         not?: string;
@@ -23,14 +24,14 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     minimum?: number;
 }
 export interface RootSchemaObject {
-    $id: string;
+    $id?: string;
     $comment?: string;
     $schema?: string;
     title?: string;
     type?: string;
     description?: string;
     definitions?: Record<string, any>;
-    properties: Record<string, any>;
+    properties?: Record<string, any>;
     required?: string[];
     additionalProperties?: [] | boolean;
     dependencies?: Record<string, string[]>;
@@ -38,7 +39,7 @@ export interface RootSchemaObject {
 export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     properties?: Record<string, PropertyDefinitionRef>;
     type?: string;
-    $id: string;
+    $id?: string;
     format?: string;
     pattern?: string;
     $comment?: string;

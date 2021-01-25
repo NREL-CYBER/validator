@@ -1,6 +1,5 @@
-import Validator from "../src/validator"
 import * as groceriesSchema from "./schemas/groceries-schema.json"
-
+import Validator from "../src/index"
 type Fruit = string;
 interface Veggie {
     veggieName: string
@@ -36,6 +35,12 @@ test("returns errors for invalid data", () => {
     const groceryValidator = new Validator<Groceries>(groceriesSchema);
     expect(groceryValidator.validate(invalidGroceryList)).toBeFalsy()
     expect(groceryValidator.validate.errors).toBeTruthy();
+})
+test("Makes a reference validator even for something that's just a property", () => {
+    const groceryValidator = new Validator<Groceries>(groceriesSchema);
+    const fruitValidator = groceryValidator.makeReferenceValidator(groceriesSchema.properties["fruits"].items);
+    console.log(fruitValidator);
+    expect(fruitValidator.validate("bannana")).toBeTruthy()
 })
 
 

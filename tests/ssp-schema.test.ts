@@ -28,7 +28,7 @@ test("generates partial data from schema", () => {
 })
 
 test("generates a partial even for a massive schema", () => {
-    const sspValidator = new Validator<unknown>(sspSchema, "system_security_plan");
+    const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
     const partialSSP = sspValidator.makePartial();
     expect(partialSSP.hasOwnProperty("metadata")).toBeTruthy()
 })

@@ -13,6 +13,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     $ref?: string
     items?: {
         $ref?: string
+        type?: string
     }
     allOf?: { not?: string, $ref?: string }[]
     anyOf?: { not?: string, $ref?: string }[]
@@ -24,14 +25,14 @@ export interface PropertyDefinitionRef extends PropertyInfo {
 
 
 export interface RootSchemaObject {
-    $id: string,
+    $id?: string,
     $comment?: string
     $schema?: string,
     title?: string,
     type?: string,
     description?: string,
     definitions?: Record<string, any>
-    properties: Record<string, any>
+    properties?: Record<string, any>
     required?: string[]
     additionalProperties?: [] | boolean
     dependencies?: Record<string, string[]>
@@ -41,7 +42,7 @@ export interface RootSchemaObject {
 export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     properties?: Record<string, PropertyDefinitionRef>
     type?: string
-    $id: string,
+    $id?: string,
     format?: string,
     pattern?: string,
     $comment?: string
@@ -102,7 +103,6 @@ export default class Validator<T> {
         const root = (validSchema as any)["$id"];
         if (typeof definition === "string") {
             this.definition = root + "#/definitions/" + definition;
-
             this.schema = this.rootSchema.definitions && this.rootSchema.definitions[definition];
             this.isRootSchema = false;
         } else {
@@ -150,6 +150,9 @@ export default class Validator<T> {
             return this.rootSchema.definitions && this.rootSchema.definitions[definitionIndex] || propertyInfo;
         }
         this.makeReferenceValidator = <RT>(propertyInfo: PropertyDefinitionRef) => {
+            if (typeof propertyInfo.$ref === "undefined") {
+                return new Validator<RT>(propertyInfo);
+            }
             const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
             return new Validator<RT>(this.rootSchema, definitionIndex);
         }

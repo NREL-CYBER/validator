@@ -1,4 +1,4 @@
-import Validator from "../src/validator"
+import Validator from "../src/index"
 import * as person from "./schemas/person-schema.json"
 
 interface Person {

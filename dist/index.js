@@ -145,6 +145,10 @@ function Validator(validSchema, definition) {
   };
 
   this.makeReferenceValidator = function (propertyInfo) {
+    if (typeof propertyInfo.$ref === "undefined") {
+      return new Validator(propertyInfo);
+    }
+
     var definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
     return new Validator(_this.rootSchema, definitionIndex);
   };
