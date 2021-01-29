@@ -20,6 +20,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     type?: string
     multipleOf?: number;
     minimum?: number;
+    format?: "number" | "time" | "text" | "date" | "email" | "password" | "search" | "tel" | "url" | "week" | "month" | "datetime-local" | undefined
 }
 
 
