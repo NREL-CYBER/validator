@@ -22,7 +22,9 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     type?: string;
     multipleOf?: number;
     minimum?: number;
-    format?: "number" | "time" | "text" | "date" | "email" | "password" | "search" | "tel" | "url" | "week" | "month" | "datetime-local" | undefined;
+    format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | undefined;
+    writeOnly?: boolean;
+    readOnly?: boolean;
 }
 export interface RootSchemaObject {
     $id?: string;
