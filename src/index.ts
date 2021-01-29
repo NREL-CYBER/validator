@@ -113,7 +113,7 @@ export default class Validator<T> {
             this.schema = this.rootSchema;
             this.isRootSchema = true;
         }
-        const jsonValidator = new Ajv();
+        const jsonValidator = new Ajv({ allErrors: true });
 
         addFormats(jsonValidator)
         jsonValidator.addSchema(validSchema);

@@ -103,7 +103,9 @@ function Validator(validSchema, definition) {
     this.isRootSchema = true;
   }
 
-  var jsonValidator = new _ajv["default"]();
+  var jsonValidator = new _ajv["default"]({
+    allErrors: true
+  });
   (0, _ajvFormats["default"])(jsonValidator);
   jsonValidator.addSchema(validSchema);
   var compiledValidator = jsonValidator.getSchema(this.definition);
