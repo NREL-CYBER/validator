@@ -158,9 +158,10 @@ export default class Validator<T> {
         }
         this.makeReferenceValidator = <RT>(propertyInfo: PropertyDefinitionRef) => {
             if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
-                const items = propertyInfo.items;                
+                const items = propertyInfo.items;
+                const { definitions } = this.rootSchema;
                 if (items) {
-                    return new Validator<RT>(items);
+                    return new Validator<RT>({ ...items, $id: undefined, definitions });
                 }
             }
             const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
