@@ -1,6 +1,6 @@
 {
   "name": "validator",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Validate JSON Schema7 Definitions",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
