@@ -152,7 +152,7 @@ function Validator(validSchema, definition) {
 
   this.makeReferenceValidator = function (propertyInfo) {
     if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
-      var items = _objectSpread({}, propertyInfo.items);
+      var items = propertyInfo.items;
 
       if (items) {
         return new Validator(items);
