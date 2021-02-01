@@ -33,5 +33,17 @@ test("generates a partial even for a massive schema", () => {
     expect(partialSSP.hasOwnProperty("metadata")).toBeTruthy()
 })
 
+test("Finds Property Refs correctly", () => {
+    const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
+    const propInfo = sspValidator.getReferenceInformation({ items: { $ref: "#/definitions/property" } })
+    expect(propInfo.title == "Property").toBeTruthy();
+})
+test("Finds nested Property Refs correctly", () => {
+    const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
+    const revisionValidator = sspValidator.makeReferenceValidator({ items: { $ref: "#/definitions/revision" } })
+    const propValidator = revisionValidator.makeReferenceValidator({ items: { $ref: "#/definitions/property" } })
+    expect(propValidator.title == "property").toBeTruthy();
+})
+
 
 
