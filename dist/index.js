@@ -154,8 +154,6 @@ function Validator(validSchema, definition) {
     if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
       var items = _objectSpread({}, propertyInfo.items);
 
-      delete items.$id;
-
       if (items) {
         return new Validator(items);
       }

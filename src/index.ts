@@ -161,7 +161,6 @@ export default class Validator<T> {
                 let items = {
                     ...propertyInfo.items
                 };
-                delete (items as any).$id;
                 if (items) {
                     return new Validator<RT>(items);
                 }
