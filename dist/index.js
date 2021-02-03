@@ -93,7 +93,7 @@ function Validator(validSchema, definition) {
 
   this.title = definition || validSchema.$comment || "";
   this.rootSchema = validSchema;
-  var root = validSchema["$id"];
+  var root = validSchema["$id"] || "";
 
   if (typeof definition === "string") {
     this.definition = root + "#/definitions/" + definition;
@@ -171,6 +171,7 @@ function Validator(validSchema, definition) {
     if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
       // Inline Sub Object
       return new Validator(_objectSpread(_objectSpread({}, propertyInfo), {}, {
+        $id: (0, _uuid.v4)(),
         definitions: definitions
       }));
     }

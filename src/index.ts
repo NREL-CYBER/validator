@@ -1,7 +1,7 @@
 import Ajv, { ValidateFunction } from "ajv"
 import addFormats from "ajv-formats"
 import { SchemaObject } from "ajv";
-import { v4} from "uuid"
+import { v4 } from "uuid"
 
 export interface PropertyInfo {
     title?: string
@@ -101,7 +101,7 @@ export default class Validator<T> {
     constructor(validSchema: RootSchemaObject, definition?: string) {
         this.title = definition || validSchema.$comment || "";
         this.rootSchema = validSchema;
-        const root = (validSchema as any)["$id"];
+        const root = (validSchema as any)["$id"] || "";
         if (typeof definition === "string") {
             this.definition = root + "#/definitions/" + definition;
             this.schema = this.rootSchema.definitions && this.rootSchema.definitions[definition];
@@ -167,7 +167,7 @@ export default class Validator<T> {
             const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
             if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
                 // Inline Sub Object
-                return new Validator<RT>({ ...propertyInfo, definitions })
+                return new Validator<RT>({ ...propertyInfo, $id: v4(), definitions })
             }
             return new Validator<RT>(this.rootSchema, definitionIndex);
         }
