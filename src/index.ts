@@ -170,7 +170,7 @@ export default class Validator<T> {
             const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
             if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
                 // Inline Sub Object
-                return new Validator<RT>({ ...propertyInfo, ...definitions })
+                return new Validator<RT>({ ...propertyInfo, definitions })
             }
             return new Validator<RT>(this.rootSchema, definitionIndex);
         }

@@ -168,7 +168,9 @@ function Validator(validSchema, definition) {
 
     if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
       // Inline Sub Object
-      return new Validator(_objectSpread(_objectSpread({}, propertyInfo), definitions));
+      return new Validator(_objectSpread(_objectSpread({}, propertyInfo), {}, {
+        definitions: definitions
+      }));
     }
 
     return new Validator(_this.rootSchema, definitionIndex);
