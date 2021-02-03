@@ -1,7 +1,7 @@
 import Ajv, { ValidateFunction } from "ajv"
 import addFormats from "ajv-formats"
 import { SchemaObject } from "ajv";
-
+import { v4} from "uuid"
 
 export interface PropertyInfo {
     title?: string
@@ -11,10 +11,7 @@ export interface PropertyInfo {
 export interface PropertyDefinitionRef extends PropertyInfo {
     $id?: string,
     $ref?: string
-    items?: {
-        $ref?: string
-        type?: string
-    }
+    items?: PropertyDefinitionRef,
     allOf?: { not?: string, $ref?: string }[]
     anyOf?: { not?: string, $ref?: string }[]
     type?: string
@@ -164,7 +161,7 @@ export default class Validator<T> {
             if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
                 const items = propertyInfo.items;
                 if (items) {
-                    return new Validator<RT>({ ...items, $id: undefined, definitions });
+                    return new Validator<RT>({ ...items, $id: v4(), definitions });
                 }
             }
             const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));

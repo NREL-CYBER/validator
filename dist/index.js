@@ -9,6 +9,8 @@ var _ajv = _interopRequireDefault(require("ajv"));
 
 var _ajvFormats = _interopRequireDefault(require("ajv-formats"));
 
+var _uuid = require("uuid");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -158,7 +160,7 @@ function Validator(validSchema, definition) {
 
       if (items) {
         return new Validator(_objectSpread(_objectSpread({}, items), {}, {
-          $id: undefined,
+          $id: (0, _uuid.v4)(),
           definitions: definitions
         }));
       }

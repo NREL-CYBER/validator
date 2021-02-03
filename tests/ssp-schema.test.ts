@@ -56,8 +56,7 @@ test("Finds nested Property Refs correctly", () => {
 
 test("Creates a reference validator even for some inline properties", () => {
     const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
-    const availability_impact_validator = sspValidator.makeReferenceValidator(sspSchema.definitions.system_information.properties.information_types.items.properties.availability_impact)
-    console.log(availability_impact_validator);
+    const availability_impact_validator = sspValidator.makeReferenceValidator(sspSchema.definitions.system_information.properties.information_types.items.properties.availability_impact);
     expect(availability_impact_validator.validate({ base: "high" })).toBeTruthy();
 })
 

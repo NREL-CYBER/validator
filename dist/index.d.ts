@@ -7,10 +7,7 @@ export interface PropertyInfo {
 export interface PropertyDefinitionRef extends PropertyInfo {
     $id?: string;
     $ref?: string;
-    items?: {
-        $ref?: string;
-        type?: string;
-    };
+    items?: PropertyDefinitionRef;
     allOf?: {
         not?: string;
         $ref?: string;
