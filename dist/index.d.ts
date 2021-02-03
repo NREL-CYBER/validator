@@ -7,7 +7,7 @@ export interface PropertyInfo {
 export interface PropertyDefinitionRef extends PropertyInfo {
     $id?: string;
     $ref?: string;
-    items?: PropertyDefinitionRef;
+    items?: PropertyDefinitionRef | Record<string, PropertyDefinitionRef>;
     allOf?: {
         not?: string;
         $ref?: string;
@@ -20,7 +20,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     multipleOf?: number;
     minimum?: number;
     properties?: Record<string, PropertyDefinitionRef>;
-    format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | undefined;
+    format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | string | undefined;
     writeOnly?: boolean;
     readOnly?: boolean;
 }

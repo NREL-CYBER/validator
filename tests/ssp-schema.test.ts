@@ -47,7 +47,6 @@ test("Finds nested Property Refs correctly", () => {
 test("Finds nested Property Refs correctly", () => {
     const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
     const documentIdValidator = sspValidator.makeReferenceValidator(sspSchema.definitions.metadata.properties.document_ids)
-    console.log(documentIdValidator);
     expect(documentIdValidator.rootSchema.title == "Document Identifier").toBeTruthy();
 })
 
