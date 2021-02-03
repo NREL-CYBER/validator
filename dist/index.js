@@ -128,7 +128,7 @@ function Validator(validSchema, definition) {
     } // arrays references objects and more advanced properties
 
 
-    var path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0];
+    var path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0].$ref;
 
     if (typeof path !== "string") {
       return undefined;

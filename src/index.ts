@@ -137,7 +137,9 @@ export default class Validator<T> {
             }
 
             // arrays references objects and more advanced properties
-            const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || (propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0])
+            const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items &&
+                propertyInfo.items.$ref || (propertyInfo.additionalProperties &&
+                    propertyInfo.additionalProperties["allOf"][0].$ref)
             if (typeof path !== "string") {
                 return undefined;
             }
