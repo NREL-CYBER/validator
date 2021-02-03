@@ -20,6 +20,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     type?: string
     multipleOf?: number;
     minimum?: number;
+    properties?: Record<string, PropertyDefinitionRef>
     format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | undefined
     writeOnly?: boolean
     readOnly?: boolean
@@ -159,14 +160,18 @@ export default class Validator<T> {
             return this.rootSchema.definitions && this.rootSchema.definitions[definitionIndex] || propertyInfo;
         }
         this.makeReferenceValidator = <RT>(propertyInfo: PropertyDefinitionRef) => {
+            const { definitions } = this.rootSchema;
             if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
                 const items = propertyInfo.items;
-                const { definitions } = this.rootSchema;
                 if (items) {
                     return new Validator<RT>({ ...items, $id: undefined, definitions });
                 }
             }
             const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
+            if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
+                // Inline Sub Object
+                return new Validator<RT>({ ...propertyInfo, ...definitions })
+            }
             return new Validator<RT>(this.rootSchema, definitionIndex);
         }
         this.makePartial = <T>(propertyDefinitionReference?: PropertyDefinitionRef) => {

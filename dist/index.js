@@ -151,9 +151,10 @@ function Validator(validSchema, definition) {
   };
 
   this.makeReferenceValidator = function (propertyInfo) {
+    var definitions = _this.rootSchema.definitions;
+
     if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
       var items = propertyInfo.items;
-      var definitions = _this.rootSchema.definitions;
 
       if (items) {
         return new Validator(_objectSpread(_objectSpread({}, items), {}, {
@@ -164,6 +165,12 @@ function Validator(validSchema, definition) {
     }
 
     var definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
+
+    if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
+      // Inline Sub Object
+      return new Validator(_objectSpread(_objectSpread({}, propertyInfo), definitions));
+    }
+
     return new Validator(_this.rootSchema, definitionIndex);
   };
 

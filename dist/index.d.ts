@@ -22,6 +22,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     type?: string;
     multipleOf?: number;
     minimum?: number;
+    properties?: Record<string, PropertyDefinitionRef>;
     format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | undefined;
     writeOnly?: boolean;
     readOnly?: boolean;
