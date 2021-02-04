@@ -188,14 +188,16 @@ export default class Validator<T> {
                 if (propRef && propRef.type && propRef.type == "array") {
                     return { [propName]: [] }
                 } else if (schema && schema.properties && schema.properties[prop]) {
-                    const propInfo = this.getReferenceInformation(schema.properties[prop]);
-                    if (propInfo.type === "object")
-                        if (propInfo && propInfo.additionalProperties && !propInfo.additionalProperties.allOf) {
-                            return { [propName]: propRef ? this.makePartial(propRef) : {} }
+                    const propInfo = { ...this.getReferenceInformation(schema.properties[prop]), ...propRef };
+                    if (propInfo.type === "object") {
+                        if (propInfo.additionalProperties && propInfo.additionalProperties.allOf) {
+                            return { [propName]: {} }
                         }
-                        else {
-                            return { [propName]: "" }
-                        }
+                        return { [propName]: propRef ? this.makePartial(propRef) : {} }
+                    }
+                    else {
+                        return { [propName]: "" }
+                    }
                 } else {
                     return {};
                 }

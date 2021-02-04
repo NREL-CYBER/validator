@@ -199,9 +199,13 @@ function Validator(validSchema, definition) {
       if (propRef && propRef.type && propRef.type == "array") {
         return _defineProperty({}, propName, []);
       } else if (schema && schema.properties && schema.properties[prop]) {
-        var propInfo = _this.getReferenceInformation(schema.properties[prop]);
+        var propInfo = _objectSpread(_objectSpread({}, _this.getReferenceInformation(schema.properties[prop])), propRef);
 
-        if (propInfo.type === "object") if (propInfo && propInfo.additionalProperties && !propInfo.additionalProperties.allOf) {
+        if (propInfo.type === "object") {
+          if (propInfo.additionalProperties && propInfo.additionalProperties.allOf) {
+            return _defineProperty({}, propName, {});
+          }
+
           return _defineProperty({}, propName, propRef ? _this.makePartial(propRef) : {});
         } else {
           return _defineProperty({}, propName, "");

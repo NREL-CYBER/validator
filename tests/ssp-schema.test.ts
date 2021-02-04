@@ -1,4 +1,4 @@
-import Validator from "../dist"
+import Validator from "../src"
 import * as sspSchema from "./schemas/oscal_ssp_schema.json"
 const snakeCaseKeys = require('snakecase-keys')
 
@@ -24,8 +24,19 @@ test("returns errors for invalid data", () => {
 test("generates partial data from schema", () => {
     const partyValidator = new Validator<Party>(sspSchema, "party");
     const partialParty = partyValidator.makePartial();
+    console.log(partialParty);
     expect(partialParty.hasOwnProperty("name")).toBeTruthy()
 })
+test("generates partial data from schema behaving well even with a deeply nested allOf Ref Dictionary", () => {
+    const sspValidator = new Validator<any>(sspSchema,"system_security_plan");
+    const partialSSP = sspValidator.makePartial();
+    console.log(partialSSP);
+    const defaultDiagrams = partialSSP.system_characteristics.authorization_boundary.diagrams;
+
+    expect(Object.keys(defaultDiagrams).length === 0).toBeTruthy()
+})
+
+
 
 test("generates a partial even for a massive schema", () => {
     const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
