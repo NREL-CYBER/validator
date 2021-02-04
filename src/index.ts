@@ -21,6 +21,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | string | undefined
     writeOnly?: boolean
     readOnly?: boolean
+
 }
 
 
@@ -35,7 +36,6 @@ export interface RootSchemaObject {
     definitions?: Record<string, any>
     properties?: Record<string, any>
     required?: string[]
-    additionalProperties?: [] | boolean
     dependencies?: Record<string, string[]>
 }
 
@@ -47,7 +47,7 @@ export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     format?: string,
     pattern?: string,
     $comment?: string
-    additionalProperties?: [] | boolean
+    additionalProperties?: PropertyDefinitionRef
 }
 
 
@@ -134,10 +134,13 @@ export default class Validator<T> {
                 return propertyInfo;
             }
 
-            // arrays references objects and more advanced properties
+            // arrays references objects and more advanced properties 
+            // we have to accomodate any of all of and other schema merges here....
+            //TODO
             const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items &&
                 propertyInfo.items.$ref || (propertyInfo.additionalProperties &&
                     propertyInfo.additionalProperties["allOf"][0].$ref)
+
             if (typeof path !== "string") {
                 return undefined;
             }
@@ -187,10 +190,12 @@ export default class Validator<T> {
                 } else if (schema && schema.properties && schema.properties[prop]) {
                     const propInfo = this.getReferenceInformation(schema.properties[prop]);
                     if (propInfo.type === "object")
-                        return { [propName]: propRef ? this.makePartial(propRef) : {} }
-                    else {
-                        return { [propName]: "" }
-                    }
+                        if (propInfo && propInfo.additionalProperties && !propInfo.additionalProperties.allOf) {
+                            return { [propName]: propRef ? this.makePartial(propRef) : {} }
+                        }
+                        else {
+                            return { [propName]: "" }
+                        }
                 } else {
                     return {};
                 }

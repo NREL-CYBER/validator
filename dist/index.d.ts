@@ -34,7 +34,6 @@ export interface RootSchemaObject {
     definitions?: Record<string, any>;
     properties?: Record<string, any>;
     required?: string[];
-    additionalProperties?: [] | boolean;
     dependencies?: Record<string, string[]>;
 }
 export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
@@ -44,7 +43,7 @@ export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     format?: string;
     pattern?: string;
     $comment?: string;
-    additionalProperties?: [] | boolean;
+    additionalProperties?: PropertyDefinitionRef;
 }
 /**
  * A class to Compile a validation schema

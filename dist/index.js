@@ -127,7 +127,9 @@ function Validator(validSchema, definition) {
 
     if (propertyInfo.type === "array" && typeof propertyInfo.items.$ref === "undefined") {
       return propertyInfo;
-    } // arrays references objects and more advanced properties
+    } // arrays references objects and more advanced properties 
+    // we have to accomodate any of all of and other schema merges here....
+    //TODO
 
 
     var path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0].$ref;
@@ -199,7 +201,9 @@ function Validator(validSchema, definition) {
       } else if (schema && schema.properties && schema.properties[prop]) {
         var propInfo = _this.getReferenceInformation(schema.properties[prop]);
 
-        if (propInfo.type === "object") return _defineProperty({}, propName, propRef ? _this.makePartial(propRef) : {});else {
+        if (propInfo.type === "object") if (propInfo && propInfo.additionalProperties && !propInfo.additionalProperties.allOf) {
+          return _defineProperty({}, propName, propRef ? _this.makePartial(propRef) : {});
+        } else {
           return _defineProperty({}, propName, "");
         }
       } else {
