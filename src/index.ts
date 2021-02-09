@@ -87,7 +87,7 @@ export default class Validator<T> {
     /**
      * Create an object that has the shape of the schema
      */
-    makePartial: (propertyDefinitionReference?: PropertyDefinitionRef) => T
+    makeWorkspace: (propertyDefinitionReference?: PropertyDefinitionRef) => T
     /**
      * Determine if this validator is for the root schema object
      */
@@ -174,7 +174,7 @@ export default class Validator<T> {
             }
             return new Validator<RT>(this.rootSchema, definitionIndex);
         }
-        this.makePartial = <T>(propertyDefinitionReference?: PropertyDefinitionRef) => {
+        this.makeWorkspace = <T>(propertyDefinitionReference?: PropertyDefinitionRef) => {
             let schema: SchemaObjectDefinition = this.schema
             if (propertyDefinitionReference) {
                 schema = this.getReferenceInformation(propertyDefinitionReference);
@@ -193,7 +193,7 @@ export default class Validator<T> {
                         if (propInfo.additionalProperties && propInfo.additionalProperties.allOf) {
                             return { [propName]: {} }
                         }
-                        return { [propName]: propRef ? this.makePartial(propRef) : {} }
+                        return { [propName]: propRef ? this.makeWorkspace(propRef) : {} }
                     }
                     else {
                         return { [propName]: "" }

@@ -81,7 +81,7 @@ export default class Validator<T> {
     /**
      * Create an object that has the shape of the schema
      */
-    makePartial: (propertyDefinitionReference?: PropertyDefinitionRef) => T;
+    makeWorkspace: (propertyDefinitionReference?: PropertyDefinitionRef) => T;
     /**
      * Determine if this validator is for the root schema object
      */

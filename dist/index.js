@@ -87,7 +87,7 @@ function Validator(validSchema, definition) {
 
   _defineProperty(this, "getReferenceInformation", void 0);
 
-  _defineProperty(this, "makePartial", void 0);
+  _defineProperty(this, "makeWorkspace", void 0);
 
   _defineProperty(this, "isRootSchema", void 0);
 
@@ -181,7 +181,7 @@ function Validator(validSchema, definition) {
     return new Validator(_this.rootSchema, definitionIndex);
   };
 
-  this.makePartial = function (propertyDefinitionReference) {
+  this.makeWorkspace = function (propertyDefinitionReference) {
     var schema = _this.schema;
 
     if (propertyDefinitionReference) {
@@ -206,7 +206,7 @@ function Validator(validSchema, definition) {
             return _defineProperty({}, propName, {});
           }
 
-          return _defineProperty({}, propName, propRef ? _this.makePartial(propRef) : {});
+          return _defineProperty({}, propName, propRef ? _this.makeWorkspace(propRef) : {});
         } else {
           return _defineProperty({}, propName, "");
         }
