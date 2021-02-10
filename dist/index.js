@@ -19,7 +19,35 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var AJVService = /*#__PURE__*/function () {
+  function AJVService() {
+    _classCallCheck(this, AJVService);
+
+    _defineProperty(this, "ajv", void 0);
+
+    this.ajv = new _ajv["default"]({
+      allErrors: true
+    });
+    (0, _ajvFormats["default"])(this.ajv);
+  }
+
+  _createClass(AJVService, null, [{
+    key: "instance",
+    value: function instance() {
+      return this._instance || (this._instance = new this());
+    }
+  }]);
+
+  return AJVService;
+}();
+
+_defineProperty(AJVService, "_instance", void 0);
 
 /**
  * A class to Compile a validation schema 
@@ -105,12 +133,13 @@ function Validator(validSchema, definition) {
     this.isRootSchema = true;
   }
 
-  var jsonValidator = new _ajv["default"]({
-    allErrors: true
-  });
-  (0, _ajvFormats["default"])(jsonValidator);
-  jsonValidator.addSchema(validSchema);
-  var compiledValidator = jsonValidator.getSchema(this.definition);
+  var existingCompiledValidator = AJVService.instance().ajv.getSchema(this.definition);
+
+  if (!existingCompiledValidator) {
+    AJVService.instance().ajv.addSchema(validSchema);
+  }
+
+  var compiledValidator = AJVService.instance().ajv.getSchema(this.definition);
 
   if (!compiledValidator) {
     throw "Invalid Schema Definition";

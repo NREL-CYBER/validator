@@ -3,6 +3,22 @@ import addFormats from "ajv-formats"
 import { SchemaObject } from "ajv";
 import { v4 } from "uuid"
 
+class AJVService {
+    private static _instance: AJVService;
+    public readonly ajv: Ajv
+    private constructor() {
+        this.ajv = new Ajv({ allErrors: true })
+        addFormats(this.ajv);
+    }
+
+    public static instance() {
+        return this._instance || (this._instance = new this());
+    }
+}
+
+
+
+
 export interface PropertyInfo {
     title?: string
     description?: string
@@ -111,13 +127,12 @@ export default class Validator<T> {
             this.schema = this.rootSchema;
             this.isRootSchema = true;
         }
-        const jsonValidator = new Ajv({ allErrors: true });
 
-        addFormats(jsonValidator)
-        jsonValidator.addSchema(validSchema);
-
-        const compiledValidator = jsonValidator.getSchema<T>(this.definition);
-
+        const existingCompiledValidator = AJVService.instance().ajv.getSchema<T>(this.definition);
+        if (!existingCompiledValidator) { 
+            AJVService.instance().ajv.addSchema(validSchema);
+        }
+        const compiledValidator = AJVService.instance().ajv.getSchema<T>(this.definition);
         if (!compiledValidator) {
             throw "Invalid Schema Definition";
         } else {
