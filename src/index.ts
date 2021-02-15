@@ -194,6 +194,9 @@ export default class Validator<T> {
             if (propertyDefinitionReference) {
                 schema = this.getReferenceInformation(propertyDefinitionReference);
             }
+            if (!schema) {
+                return {} as unknown as T;
+            }
             const defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(prop => {
                 const propName = prop;
                 const propRef = schema.properties && schema.properties[prop];
