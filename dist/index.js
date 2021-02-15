@@ -211,7 +211,7 @@ function Validator(validSchema, definition) {
   };
 
   this.makeWorkspace = function (propertyDefinitionReference) {
-    var schema = _this.schema;
+    var schema = _this.isRootSchema ? _this.rootSchema : _this.schema;
 
     if (propertyDefinitionReference) {
       schema = _this.getReferenceInformation(propertyDefinitionReference);

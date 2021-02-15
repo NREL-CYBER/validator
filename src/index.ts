@@ -129,7 +129,7 @@ export default class Validator<T> {
         }
 
         const existingCompiledValidator = AJVService.instance().ajv.getSchema<T>(this.definition);
-        if (!existingCompiledValidator) { 
+        if (!existingCompiledValidator) {
             AJVService.instance().ajv.addSchema(validSchema);
         }
         const compiledValidator = AJVService.instance().ajv.getSchema<T>(this.definition);
@@ -190,7 +190,7 @@ export default class Validator<T> {
             return new Validator<RT>(this.rootSchema, definitionIndex);
         }
         this.makeWorkspace = <T>(propertyDefinitionReference?: PropertyDefinitionRef) => {
-            let schema: SchemaObjectDefinition = this.schema
+            let schema: SchemaObjectDefinition = this.isRootSchema ? this.rootSchema : this.schema
             if (propertyDefinitionReference) {
                 schema = this.getReferenceInformation(propertyDefinitionReference);
             }
