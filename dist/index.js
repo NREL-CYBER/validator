@@ -217,6 +217,10 @@ function Validator(validSchema, definition) {
       schema = _this.getReferenceInformation(propertyDefinitionReference);
     }
 
+    if (!schema) {
+      return {};
+    }
+
     var defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(function (prop) {
       var propName = prop;
       var propRef = schema.properties && schema.properties[prop];
