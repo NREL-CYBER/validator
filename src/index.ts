@@ -7,7 +7,7 @@ class AJVService {
     private static _instance: AJVService;
     public readonly ajv: Ajv
     private constructor() {
-        this.ajv = new Ajv({ allErrors: true })
+        this.ajv = new Ajv({ allErrors: true, strict: false })
         addFormats(this.ajv);
     }
 

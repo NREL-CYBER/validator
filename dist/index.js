@@ -32,7 +32,8 @@ var AJVService = /*#__PURE__*/function () {
     _defineProperty(this, "ajv", void 0);
 
     this.ajv = new _ajv["default"]({
-      allErrors: true
+      allErrors: true,
+      strict: false
     });
     (0, _ajvFormats["default"])(this.ajv);
   }
