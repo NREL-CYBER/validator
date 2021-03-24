@@ -187,7 +187,7 @@ export default class Validator<T> {
                 // Inline Sub Object
                 return new Validator<RT>({ ...propertyInfo, $id: v4(), definitions })
             }
-            return new Validator<RT>(this.rootSchema, definitionIndex);
+            return new Validator<RT>({ ...this.rootSchema, $id: v4() }, definitionIndex);
         }
         this.makeWorkspace = <T>(propertyDefinitionReference?: PropertyDefinitionRef) => {
             let schema: SchemaObjectDefinition = this.isRootSchema ? this.rootSchema : this.schema

@@ -208,7 +208,9 @@ function Validator(validSchema, definition) {
       }));
     }
 
-    return new Validator(_this.rootSchema, definitionIndex);
+    return new Validator(_objectSpread(_objectSpread({}, _this.rootSchema), {}, {
+      $id: (0, _uuid.v4)()
+    }), definitionIndex);
   };
 
   this.makeWorkspace = function (propertyDefinitionReference) {
