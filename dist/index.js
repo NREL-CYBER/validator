@@ -137,7 +137,13 @@ function Validator(validSchema, definition) {
   var existingCompiledValidator = AJVService.instance().ajv.getSchema(this.definition);
 
   if (!existingCompiledValidator) {
-    AJVService.instance().ajv.addSchema(validSchema);
+    try {
+      AJVService.instance().ajv.addSchema(validSchema);
+    } catch (_unused) {
+      AJVService.instance().ajv.addSchema(_objectSpread(_objectSpread({}, validSchema), {}, {
+        $id: (0, _uuid.v4)()
+      }));
+    }
   }
 
   var compiledValidator = AJVService.instance().ajv.getSchema(this.definition);

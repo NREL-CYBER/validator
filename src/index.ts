@@ -130,7 +130,11 @@ export default class Validator<T> {
 
         const existingCompiledValidator = AJVService.instance().ajv.getSchema<T>(this.definition);
         if (!existingCompiledValidator) {
-            AJVService.instance().ajv.addSchema(validSchema);
+            try {
+                AJVService.instance().ajv.addSchema(validSchema);
+            } catch{
+                AJVService.instance().ajv.addSchema({ ...validSchema, $id: v4() });
+            }
         }
         const compiledValidator = AJVService.instance().ajv.getSchema<T>(this.definition);
         if (!compiledValidator) {

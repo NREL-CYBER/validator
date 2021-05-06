@@ -1,6 +1,6 @@
 {
-  "name": "validator",
-  "version": "4.3.4",
+  "name": "atomic-validator",
+  "version": "4.3.5",
   "description": "Validate JSON Schema7 Definitions",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
