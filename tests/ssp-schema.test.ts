@@ -88,7 +88,7 @@ test("Creates a valid uuid in the workspace when a custom generator is added", (
     const ssp = sspValidator.makeWorkspace();
     const isValid = sspValidator.validate(ssp);
 
-    const uuidIsValid = sspValidator.validate.errors.filter(x => x.dataPath.includes("uuid")).length === 0;
+    const uuidIsValid = (sspValidator.validate.errors || []).filter(x => x.dataPath.includes("uuid")).length === 0;
     expect(uuidIsValid).toBeTruthy();
 })
 

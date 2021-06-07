@@ -111,6 +111,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="default.html#schema" class="tsd-kind-icon">schema</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="default.html#title" class="tsd-kind-icon">title</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="default.html#validate" class="tsd-kind-icon">validate</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="default.html#workspacegenerationmap" class="tsd-kind-icon">workspace<wbr>Generation<wbr>Map</a></li>
 							</ul>
 						</section>
 					</div>
@@ -122,13 +123,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">new default&lt;T&gt;<span class="tsd-signature-symbol">(</span>validSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/rootschemaobject.html" class="tsd-signature-type" data-tsd-kind="Interface">RootSchemaObject</a>, definition<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">new default&lt;T&gt;<span class="tsd-signature-symbol">(</span>validSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/rootschemaobject.html" class="tsd-signature-type" data-tsd-kind="Interface">RootSchemaObject</a>, definition<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, workspaceGenerationMap<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L110">src/index.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L116">src/index.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -157,6 +158,12 @@
 										<p>The specific definition of the schema to validate against</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> workspaceGenerationMap: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A map of custom fields to generate when making workspace</p>
+									</div>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
@@ -171,7 +178,7 @@
 					<div class="tsd-signature tsd-kind-icon">definition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L82">src/index.ts:82</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L84">src/index.ts:84</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -186,7 +193,7 @@
 					<div class="tsd-signature tsd-kind-icon">get<wbr>Reference<wbr>Information<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>propertyDefinition<span class="tsd-signature-symbol">: </span><a href="../interfaces/propertydefinitionref.html" class="tsd-signature-type" data-tsd-kind="Interface">PropertyDefinitionRef</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../interfaces/schemaobjectdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">SchemaObjectDefinition</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L102">src/index.ts:102</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L104">src/index.ts:104</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -222,7 +229,7 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Root<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L110">src/index.ts:110</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L112">src/index.ts:112</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -237,7 +244,7 @@
 					<div class="tsd-signature tsd-kind-icon">make<wbr>Reference<wbr>Validator<span class="tsd-signature-symbol">:</span> &lt;RT&gt;<span class="tsd-signature-symbol">(</span>propertyDefinition<span class="tsd-signature-symbol">: </span><a href="../interfaces/propertydefinitionref.html" class="tsd-signature-type" data-tsd-kind="Interface">PropertyDefinitionRef</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RT</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L98">src/index.ts:98</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L100">src/index.ts:100</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -279,7 +286,7 @@
 					<div class="tsd-signature tsd-kind-icon">make<wbr>Workspace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>propertyDefinitionReference<span class="tsd-signature-symbol">?: </span><a href="../interfaces/propertydefinitionref.html" class="tsd-signature-type" data-tsd-kind="Interface">PropertyDefinitionRef</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">T</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L106">src/index.ts:106</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L108">src/index.ts:108</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -315,7 +322,7 @@
 					<div class="tsd-signature tsd-kind-icon">root<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="../interfaces/rootschemaobject.html" class="tsd-signature-type" data-tsd-kind="Interface">RootSchemaObject</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L86">src/index.ts:86</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L88">src/index.ts:88</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -330,7 +337,7 @@
 					<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <a href="../interfaces/schemaobjectdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">SchemaObjectDefinition</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L90">src/index.ts:90</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L92">src/index.ts:92</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -345,7 +352,7 @@
 					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L94">src/index.ts:94</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L96">src/index.ts:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -360,12 +367,27 @@
 					<div class="tsd-signature tsd-kind-icon">validate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ValidateFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/98e4937/src/index.ts#L78">src/index.ts:78</a></li>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L80">src/index.ts:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Validate a Data  against a compiled JSON Schema</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="workspacegenerationmap" class="tsd-anchor"></a>
+					<h3>workspace<wbr>Generation<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">workspace<wbr>Generation<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/NREL-CYBER/validator/blob/e2159b7/src/index.ts#L116">src/index.ts:116</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Custom Workspace Generation</p>
 						</div>
 					</div>
 				</section>
@@ -415,6 +437,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="default.html#validate" class="tsd-kind-icon">validate</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="default.html#workspacegenerationmap" class="tsd-kind-icon">workspace<wbr>Generation<wbr>Map</a>
 							</li>
 						</ul>
 					</li>
