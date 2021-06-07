@@ -234,7 +234,7 @@ function Validator(validSchema, definition) {
       var propName = prop;
       var propRef = schema.properties && schema.properties[prop];
 
-      if (propName === "undefined" || typeof propName === "undefined") {
+      if (propName === "undefined" || typeof propName === "undefined" || propRef !== null && propRef !== void 0 && propRef.minItems && propRef.minItems !== 0) {
         return {};
       }
 

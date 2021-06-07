@@ -17,8 +17,8 @@ export interface PropertyDefinitionRef extends PropertyInfo {
         $ref?: string;
     }[];
     type?: string;
-    multipleOf?: number;
-    minimum?: number;
+    multipleOf?: string;
+    minItems?: number;
     properties?: Record<string, PropertyDefinitionRef>;
     format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | string | undefined;
     writeOnly?: boolean;
@@ -40,9 +40,11 @@ export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     properties?: Record<string, PropertyDefinitionRef>;
     type?: string;
     $id?: string;
+    items?: PropertyDefinitionRef[];
     format?: string;
     pattern?: string;
     $comment?: string;
+    required?: string[];
     additionalProperties?: PropertyDefinitionRef;
 }
 /**

@@ -31,8 +31,8 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     allOf?: { not?: string, $ref?: string }[]
     anyOf?: { not?: string, $ref?: string }[]
     type?: string
-    multipleOf?: number;
-    minimum?: number;
+    multipleOf?: string;
+    minItems?: number;
     properties?: Record<string, PropertyDefinitionRef>
     format?: "iri" | "iri-reference" | "uri-template" | "date" | "email" | "password" | "idn-email" | "idn-hostname" | "json-pointer" | "regex" | string | undefined
     writeOnly?: boolean
@@ -60,9 +60,11 @@ export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     properties?: Record<string, PropertyDefinitionRef>
     type?: string
     $id?: string,
+    items?: PropertyDefinitionRef[],
     format?: string,
     pattern?: string,
     $comment?: string
+    required?: string[]
     additionalProperties?: PropertyDefinitionRef
 }
 
@@ -204,7 +206,7 @@ export default class Validator<T> {
             const defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(prop => {
                 const propName = prop;
                 const propRef = schema.properties && schema.properties[prop];
-                if (propName === "undefined" || typeof (propName) === "undefined") {
+                if (propName === "undefined" || typeof (propName) === "undefined" || propRef?.minItems && propRef.minItems !== 0) {
                     return {}
                 }
                 if (propRef && propRef.type && propRef.type == "array") {
