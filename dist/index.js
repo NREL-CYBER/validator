@@ -246,7 +246,6 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
       var customWorkspaceGenerator = _this.workspaceGenerationMap[propName];
 
       if (typeof customWorkspaceGenerator === "function") {
-        console.log("-----------------------------------");
         return _defineProperty({}, propName, customWorkspaceGenerator());
       }
 
@@ -267,8 +266,10 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
           }
 
           return _defineProperty({}, propName, propRef ? _this.makeWorkspace(propRef) : {});
-        } else {
+        } else if (propInfo.type === "string") {
           return _defineProperty({}, propName, "");
+        } else {
+          return {};
         }
       } else {
         return {};

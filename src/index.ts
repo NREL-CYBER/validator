@@ -113,7 +113,7 @@ export default class Validator<T> {
     /**
      * Custom Workspace Generation
      */
-    workspaceGenerationMap: Record<string, () => unknown>
+    workspaceGenerationMap: Record<string, () => any>
     /**
      * Compile a validation schema 
      * into a strongly typed validation function
@@ -121,7 +121,7 @@ export default class Validator<T> {
      * @param definition The specific definition of the schema to validate against
      * @param workspaceGenerationMap A map of custom fields to generate when making workspace
      */
-    constructor(validSchema: RootSchemaObject, definition?: string, workspaceGenerationMap?: Record<string, () => string>) {
+    constructor(validSchema: RootSchemaObject, definition?: string, workspaceGenerationMap?: Record<string, () => any>) {
         this.title = definition || validSchema.$comment || validSchema.$id || "Unknown";
         this.rootSchema = validSchema;
         this.workspaceGenerationMap = workspaceGenerationMap || {};
