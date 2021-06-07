@@ -25,16 +25,15 @@ test("returns errors for invalid data", () => {
 test("generates a workspace in the shape of the schema", () => {
     const partyValidator = new Validator<Party>(sspSchema, "party");
     const partialParty = partyValidator.makeWorkspace();
-    console.log(partialParty);
-    expect(partialParty.hasOwnProperty("name")).toBeTruthy()
+    expect(partialParty.hasOwnProperty("uuid")).toBeTruthy()
 })
 test("generates workspace data from schema behaving well even with a deeply nested allOf Ref Dictionary", () => {
     const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
     const partialSSP = sspValidator.makeWorkspace();
     console.log(partialSSP);
-    const defaultDiagrams = partialSSP.system_characteristics.authorization_boundary.diagrams;
+    const defaultDiagramDescription = partialSSP.system_characteristics.authorization_boundary.description;
 
-    expect(Object.keys(defaultDiagrams).length === 0).toBeTruthy()
+    expect(defaultDiagramDescription.length === 0).toBeTruthy()
 })
 
 
@@ -81,6 +80,16 @@ test("Creates a reference validator even for deeply nested inline properties and
     const resource_validator = sspValidator.makeReferenceValidator<{ title: string, description: string, uuid: string }>(sspSchema.definitions.back_matter.properties.resources.items);
     const workspace = resource_validator.makeWorkspace();
     expect(workspace).toBeTruthy();
+})
+test("Creates a valid uuid in the workspace when a custom generator is added", () => {
+    const sspValidator = new Validator(sspSchema, "system_security_plan", {
+        uuid: v4,
+    });
+    const ssp = sspValidator.makeWorkspace();
+    const isValid = sspValidator.validate(ssp);
+
+    const uuidIsValid = sspValidator.validate.errors.filter(x => x.dataPath.includes("uuid")).length === 0;
+    expect(uuidIsValid).toBeTruthy();
 })
 
 
