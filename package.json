@@ -1,6 +1,6 @@
 {
   "name": "validator",
-  "version": "4.3.6",
+  "version": "4.3.7",
   "description": "Validate JSON Schema7 Definitions",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,6 +29,9 @@
     "build": "tsc --emitDeclarationOnly && babel src --out-dir dist --extensions .ts,.tsx",
     "docs": "typedoc --out docs src/index.ts",
     "test": "jest"
+  },
+  "resolutions": {
+    "ws": "7.4.6"
   },
   "repository": {
     "type": "git",

@@ -111,14 +111,21 @@ export default class Validator<T> {
      */
     isRootSchema: boolean
     /**
+     * Custom Workspace Generation
+     */
+    workspaceGenerationMap: Record<string, () => unknown>
+    /**
      * Compile a validation schema 
      * into a strongly typed validation function
      * @param validSchema Schema in JsonSchema 7.0 format
      * @param definition The specific definition of the schema to validate against
+     * @param workspaceGenerationMap A map of custom fields to generate when making workspace
      */
-    constructor(validSchema: RootSchemaObject, definition?: string) {
-        this.title = definition || validSchema.$comment || "";
+    constructor(validSchema: RootSchemaObject, definition?: string, workspaceGenerationMap?: Record<string, () => string>) {
+        this.title = definition || validSchema.$comment || validSchema.$id || "Unknown";
         this.rootSchema = validSchema;
+        this.workspaceGenerationMap = workspaceGenerationMap || {};
+
         const root = (validSchema as any)["$id"] || "";
         if (typeof definition === "string") {
             this.definition = root + "#/definitions/" + definition;
@@ -204,9 +211,16 @@ export default class Validator<T> {
                 return {} as unknown as T;
             }
             const defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(prop => {
+                const required = schema.required?.includes(prop)
                 const propName = prop;
+                const customWorkspaceGenerator = this.workspaceGenerationMap[propName]
+                if (typeof customWorkspaceGenerator === "function") {
+                    return {
+                        [propName]: customWorkspaceGenerator()
+                    }
+                }
                 const propRef = schema.properties && schema.properties[prop];
-                if (propName === "undefined" || typeof (propName) === "undefined" || propRef?.minItems && propRef.minItems !== 0) {
+                if (propName === "undefined" || typeof (propName) === "undefined" || !required) {
                     return {}
                 }
                 if (propRef && propRef.type && propRef.type == "array") {
@@ -219,8 +233,10 @@ export default class Validator<T> {
                         }
                         return { [propName]: propRef ? this.makeWorkspace(propRef) : {} }
                     }
-                    else {
+                    else if (propInfo.type === "string") {
                         return { [propName]: "" }
+                    } else {
+                        return {}
                     }
                 } else {
                     return {};

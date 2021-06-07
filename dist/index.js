@@ -92,12 +92,17 @@ var Validator =
  */
 
 /**
+ * Custom Workspace Generation
+ */
+
+/**
  * Compile a validation schema 
  * into a strongly typed validation function
  * @param validSchema Schema in JsonSchema 7.0 format
  * @param definition The specific definition of the schema to validate against
+ * @param workspaceGenerationMap A map of custom fields to generate when making workspace
  */
-function Validator(validSchema, definition) {
+function Validator(validSchema, definition, workspaceGenerationMap) {
   var _this = this;
 
   _classCallCheck(this, Validator);
@@ -120,8 +125,11 @@ function Validator(validSchema, definition) {
 
   _defineProperty(this, "isRootSchema", void 0);
 
-  this.title = definition || validSchema.$comment || "";
+  _defineProperty(this, "workspaceGenerationMap", void 0);
+
+  this.title = definition || validSchema.$comment || validSchema.$id || "Unknown";
   this.rootSchema = validSchema;
+  this.workspaceGenerationMap = workspaceGenerationMap || {};
   var root = validSchema["$id"] || "";
 
   if (typeof definition === "string") {
@@ -231,10 +239,20 @@ function Validator(validSchema, definition) {
     }
 
     var defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(function (prop) {
+      var _schema$required;
+
+      var required = (_schema$required = schema.required) === null || _schema$required === void 0 ? void 0 : _schema$required.includes(prop);
       var propName = prop;
+      var customWorkspaceGenerator = _this.workspaceGenerationMap[propName];
+
+      if (typeof customWorkspaceGenerator === "function") {
+        console.log("-----------------------------------");
+        return _defineProperty({}, propName, customWorkspaceGenerator());
+      }
+
       var propRef = schema.properties && schema.properties[prop];
 
-      if (propName === "undefined" || typeof propName === "undefined" || propRef !== null && propRef !== void 0 && propRef.minItems && propRef.minItems !== 0) {
+      if (propName === "undefined" || typeof propName === "undefined" || !required) {
         return {};
       }
 

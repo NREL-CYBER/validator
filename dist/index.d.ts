@@ -89,10 +89,15 @@ export default class Validator<T> {
      */
     isRootSchema: boolean;
     /**
+     * Custom Workspace Generation
+     */
+    workspaceGenerationMap: Record<string, () => string>;
+    /**
      * Compile a validation schema
      * into a strongly typed validation function
      * @param validSchema Schema in JsonSchema 7.0 format
      * @param definition The specific definition of the schema to validate against
+     * @param workspaceGenerationMap A map of custom fields to generate when making workspace
      */
-    constructor(validSchema: RootSchemaObject, definition?: string);
+    constructor(validSchema: RootSchemaObject, definition?: string, workspaceGenerationMap?: Record<string, () => string>);
 }
