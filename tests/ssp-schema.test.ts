@@ -30,7 +30,6 @@ test("generates a workspace in the shape of the schema", () => {
 test("generates workspace data from schema behaving well even with a deeply nested allOf Ref Dictionary", () => {
     const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
     const partialSSP = sspValidator.makeWorkspace();
-    console.log(partialSSP);
     const defaultDiagramDescription = partialSSP.system_characteristics.authorization_boundary.description;
 
     expect(defaultDiagramDescription.length === 0).toBeTruthy()
@@ -49,35 +48,27 @@ test("Finds Property Refs correctly", () => {
     const propInfo = sspValidator.getReferenceInformation({ items: { $ref: "#/definitions/property" } })
     expect(propInfo.title == "Property").toBeTruthy();
 })
-test("Finds nested Property Refs correctly", () => {
+test("Finds nested Property Refs correctly", async () => {
     const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
-    const revisionValidator = sspValidator.makeReferenceValidator({ items: { $ref: "#/definitions/revision" } })
-    const propValidator = revisionValidator.makeReferenceValidator({ items: { $ref: "#/definitions/property" } })
+    const revisionValidator = await sspValidator.makeReferenceValidator({ items: { $ref: "#/definitions/revision" } })
+    const propValidator = await revisionValidator.makeReferenceValidator({ items: { $ref: "#/definitions/property" } })
     expect(propValidator.title == "property").toBeTruthy();
 })
-test("Finds nested Property Refs correctly", () => {
+test("Finds nested Property Refs correctly", async () => {
     const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
-    const documentIdValidator = sspValidator.makeReferenceValidator(sspSchema.definitions.metadata.properties.document_ids)
+    const documentIdValidator = await sspValidator.makeReferenceValidator(sspSchema.definitions.metadata.properties.document_ids)
     expect(documentIdValidator.rootSchema.title == "Document Identifier").toBeTruthy();
 })
 
 
-
-
-test("Creates a reference validator even for some inline properties", () => {
-    const sspValidator = new Validator<any>(sspSchema, "system_security_plan");
-    const availability_impact_validator = sspValidator.makeReferenceValidator(sspSchema.definitions.system_information.properties.information_types.items.properties.availability_impact);
-    expect(availability_impact_validator.validate({ base: "high" })).toBeTruthy();
-})
-
-test("Creates a reference validator even for deeply nested properties", () => {
+test("Creates a reference validator even for deeply nested properties", async () => {
     const sspValidator = new Validator(sspSchema, "system_security_plan");
-    const resource_validator = sspValidator.makeReferenceValidator<{ title: string, description: string, uuid: string }>(sspSchema.definitions.back_matter.properties.resources.items);
+    const resource_validator = await sspValidator.makeReferenceValidator<{ title: string, description: string, uuid: string }>(sspSchema.definitions.back_matter.properties.resources.items);
     expect(resource_validator.validate({ uuid: v4(), title: "nice" })).toBeTruthy();
 })
-test("Creates a reference validator even for deeply nested inline properties and still makes a workspace", () => {
+test("Creates a reference validator even for deeply nested inline properties and still makes a workspace", async () => {
     const sspValidator = new Validator(sspSchema, "system_security_plan");
-    const resource_validator = sspValidator.makeReferenceValidator<{ title: string, description: string, uuid: string }>(sspSchema.definitions.back_matter.properties.resources.items);
+    const resource_validator = await sspValidator.makeReferenceValidator<{ title: string, description: string, uuid: string }>(sspSchema.definitions.back_matter.properties.resources.items);
     const workspace = resource_validator.makeWorkspace();
     expect(workspace).toBeTruthy();
 })

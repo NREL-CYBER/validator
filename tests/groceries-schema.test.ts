@@ -36,14 +36,14 @@ test("returns errors for invalid data", () => {
     expect(groceryValidator.validate(invalidGroceryList)).toBeFalsy()
     expect(groceryValidator.validate.errors).toBeTruthy();
 })
-test("Makes a reference validator even for something that's just a property", () => {
+test("Makes a reference validator even for something that's just a property", async () => {
     const groceryValidator = new Validator<Fruit[]>(groceriesSchema);
-    const fruitValidator = groceryValidator.makeReferenceValidator(groceriesSchema.properties["fruits"]);
+    const fruitValidator = await groceryValidator.makeReferenceValidator(groceriesSchema.properties["fruits"]);
     expect(fruitValidator.validate(groceryList.fruits[0])).toBeTruthy()
 })
-test("Makes a reference validator for an array of definition refs", () => {
+test("Makes a reference validator for an array of definition refs", async () => {
     const groceryValidator = new Validator<Veggie[]>(groceriesSchema);
-    const veggieValidator = groceryValidator.makeReferenceValidator(groceriesSchema.properties["vegetables"]);
+    const veggieValidator = await groceryValidator.makeReferenceValidator(groceriesSchema.properties["vegetables"]);
     expect(veggieValidator.validate(groceryList.veggies[0])).toBeTruthy()
 })
 

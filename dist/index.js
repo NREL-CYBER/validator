@@ -164,7 +164,7 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
 
 
   var findDefinitionPath = function findDefinitionPath(propertyInfo) {
-    // just the regular base propertyies
+    // just the regular base properties
     if ("type" in propertyInfo && ["string", "boolean", "number"].includes(propertyInfo["type"])) {
       return propertyInfo;
     }
@@ -176,7 +176,7 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
     //TODO
 
 
-    var path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || propertyInfo.additionalProperties && propertyInfo.additionalProperties["allOf"][0].$ref;
+    var path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items && propertyInfo.items.$ref || propertyInfo.additionalProperties && propertyInfo.additionalProperties;
 
     if (typeof path !== "string") {
       return undefined;
@@ -234,7 +234,9 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
       schema = _this.getReferenceInformation(propertyDefinitionReference);
     }
 
-    if (!schema) {
+    console.log(schema);
+
+    if (typeof schema === "undefined") {
       return {};
     }
 
@@ -243,6 +245,7 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
 
       var required = (_schema$required = schema.required) === null || _schema$required === void 0 ? void 0 : _schema$required.includes(prop);
       var propName = prop;
+      var isBase = propName === "base";
       var customWorkspaceGenerator = _this.workspaceGenerationMap[propName];
 
       if (typeof customWorkspaceGenerator === "function") {
@@ -250,23 +253,33 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
       }
 
       var propRef = schema.properties && schema.properties[prop];
+      if (isBase) console.log(propRef);
 
       if (propName === "undefined" || typeof propName === "undefined" || !required) {
         return {};
       }
 
-      if (propRef && propRef.type && propRef.type == "array") {
-        return _defineProperty({}, propName, []);
+      if (propRef && propRef.type) {
+        if (propRef.type == "array") return _defineProperty({}, propName, []);
+
+        if (propRef.type == "string") {
+          return _defineProperty({}, propName, "");
+        }
       } else if (schema && schema.properties && schema.properties[prop]) {
         var propInfo = _objectSpread(_objectSpread({}, _this.getReferenceInformation(schema.properties[prop])), propRef);
 
+        if (isBase) console.log(propInfo);
+
         if (propInfo.type === "object") {
           if (propInfo.additionalProperties && propInfo.additionalProperties.allOf) {
+            console.log(propInfo.additionalProperties);
             return _defineProperty({}, propName, {});
           }
 
           return _defineProperty({}, propName, propRef ? _this.makeWorkspace(propRef) : {});
-        } else if (propInfo.type === "string") {
+        }
+
+        if (propInfo.type === "string") {
           return _defineProperty({}, propName, "");
         } else {
           return {};

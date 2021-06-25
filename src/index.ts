@@ -97,7 +97,7 @@ export default class Validator<T> {
     /**
      * Make a validator for a referenced attribute
      */
-    makeReferenceValidator: <RT>(propertyDefinition: PropertyDefinitionRef) => Validator<RT>
+    makeReferenceValidator: <RT>(propertyDefinition: PropertyDefinitionRef) => Promise<Validator<RT>>
     /**
      * Make a validator for a referenced attribute
      */
@@ -154,7 +154,7 @@ export default class Validator<T> {
 
         // Given a property get the information from 
         const findDefinitionPath = (propertyInfo: any) => {
-            // just the regular base propertyies
+            // just the regular base properties
             if ("type" in propertyInfo && ["string", "boolean", "number"].includes(propertyInfo["type"])) {
                 return propertyInfo;
             }
@@ -166,8 +166,8 @@ export default class Validator<T> {
             // we have to accomodate any of all of and other schema merges here....
             //TODO
             const path = propertyInfo.$ref || propertyInfo.$id || propertyInfo.items &&
-                propertyInfo.items.$ref || (propertyInfo.additionalProperties &&
-                    propertyInfo.additionalProperties["allOf"][0].$ref)
+                propertyInfo.items.$ref || propertyInfo.additionalProperties && propertyInfo.additionalProperties
+
 
             if (typeof path !== "string") {
                 return undefined;
@@ -188,31 +188,40 @@ export default class Validator<T> {
             return this.rootSchema.definitions && this.rootSchema.definitions[definitionIndex] || propertyInfo;
         }
         this.makeReferenceValidator = <RT>(propertyInfo: PropertyDefinitionRef) => {
-            const { definitions } = this.rootSchema;
-            if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
-                const items = propertyInfo.items;
-                if (items) {
-                    return new Validator<RT>({ ...items, $id: v4(), definitions });
+            return new Promise<Validator<RT>>((resolve, reject) => {
+                const { definitions } = this.rootSchema;
+                if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
+                    const items = propertyInfo.items;
+                    if (items) {
+                        resolve(new Validator<RT>({ ...items, $id: v4(), definitions }));
+                        return
+                    }
                 }
-            }
-            const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
-            if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
-                // Inline Sub Object
-                return new Validator<RT>({ ...propertyInfo, $id: v4(), definitions })
-            }
-            return new Validator<RT>({ ...this.rootSchema, $id: v4() }, definitionIndex);
+                const definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
+                if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
+                    // Inline Sub Object
+                    resolve(new Validator<RT>({ ...propertyInfo, $id: v4(), definitions }))
+                    return
+                }
+                resolve(new Validator<RT>({ ...this.rootSchema, $id: v4() }, definitionIndex));
+            })
         }
         this.makeWorkspace = <T>(propertyDefinitionReference?: PropertyDefinitionRef) => {
             let schema: SchemaObjectDefinition = this.isRootSchema ? this.rootSchema : this.schema
             if (propertyDefinitionReference) {
                 schema = this.getReferenceInformation(propertyDefinitionReference);
             }
-            if (!schema) {
+            if (typeof schema === "undefined") {
                 return {} as unknown as T;
+            }
+            const properties = Object.keys(schema.properties || {})
+            if (properties.includes("base")) {
+                console.log(properties);
             }
             const defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(prop => {
                 const required = schema.required?.includes(prop)
                 const propName = prop;
+                const isBase = propName === "base"
                 const customWorkspaceGenerator = this.workspaceGenerationMap[propName]
                 if (typeof customWorkspaceGenerator === "function") {
                     return {
@@ -220,20 +229,30 @@ export default class Validator<T> {
                     }
                 }
                 const propRef = schema.properties && schema.properties[prop];
+                if (isBase)
+                    console.log(propRef)
                 if (propName === "undefined" || typeof (propName) === "undefined" || !required) {
                     return {}
                 }
-                if (propRef && propRef.type && propRef.type == "array") {
-                    return { [propName]: [] }
+                if (propRef && propRef.type) {
+                    if (propRef.type == "array")
+                        return { [propName]: [] }
+                    if (propRef.type == "string") {
+                        return { [propName]: "" }
+                    }
                 } else if (schema && schema.properties && schema.properties[prop]) {
                     const propInfo = { ...this.getReferenceInformation(schema.properties[prop]), ...propRef };
+                    if (isBase)
+                        console.log(propInfo)
+
                     if (propInfo.type === "object") {
                         if (propInfo.additionalProperties && propInfo.additionalProperties.allOf) {
+                            console.log(propInfo.additionalProperties)
                             return { [propName]: {} }
                         }
                         return { [propName]: propRef ? this.makeWorkspace(propRef) : {} }
                     }
-                    else if (propInfo.type === "string") {
+                    if (propInfo.type === "string") {
                         return { [propName]: "" }
                     } else {
                         return {}
