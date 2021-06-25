@@ -75,7 +75,7 @@ export default class Validator<T> {
     /**
      * Make a validator for a referenced attribute
      */
-    makeReferenceValidator: <RT>(propertyDefinition: PropertyDefinitionRef) => Validator<RT>;
+    makeReferenceValidator: <RT>(propertyDefinition: PropertyDefinitionRef) => Promise<Validator<RT>>;
     /**
      * Make a validator for a referenced attribute
      */

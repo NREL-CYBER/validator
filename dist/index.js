@@ -199,32 +199,36 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
   };
 
   this.makeReferenceValidator = function (propertyInfo) {
-    var definitions = _this.rootSchema.definitions;
+    return new Promise(function (resolve, reject) {
+      var definitions = _this.rootSchema.definitions;
 
-    if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
-      var items = propertyInfo.items;
+      if (typeof propertyInfo.$ref === "undefined" && typeof (propertyInfo.items ? propertyInfo.items.$ref : undefined) === "undefined") {
+        var items = propertyInfo.items;
 
-      if (items) {
-        return new Validator(_objectSpread(_objectSpread({}, items), {}, {
+        if (items) {
+          resolve(new Validator(_objectSpread(_objectSpread({}, items), {}, {
+            $id: (0, _uuid.v4)(),
+            definitions: definitions
+          })));
+          return;
+        }
+      }
+
+      var definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
+
+      if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
+        // Inline Sub Object
+        resolve(new Validator(_objectSpread(_objectSpread({}, propertyInfo), {}, {
           $id: (0, _uuid.v4)(),
           definitions: definitions
-        }));
+        })));
+        return;
       }
-    }
 
-    var definitionIndex = getDefinitionIndex(findDefinitionPath(propertyInfo));
-
-    if (typeof definitionIndex === "undefined" && propertyInfo.properties) {
-      // Inline Sub Object
-      return new Validator(_objectSpread(_objectSpread({}, propertyInfo), {}, {
-        $id: (0, _uuid.v4)(),
-        definitions: definitions
-      }));
-    }
-
-    return new Validator(_objectSpread(_objectSpread({}, _this.rootSchema), {}, {
-      $id: (0, _uuid.v4)()
-    }), definitionIndex);
+      resolve(new Validator(_objectSpread(_objectSpread({}, _this.rootSchema), {}, {
+        $id: (0, _uuid.v4)()
+      }), definitionIndex));
+    });
   };
 
   this.makeWorkspace = function (propertyDefinitionReference) {
@@ -234,10 +238,14 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
       schema = _this.getReferenceInformation(propertyDefinitionReference);
     }
 
-    console.log(schema);
-
     if (typeof schema === "undefined") {
       return {};
+    }
+
+    var properties = Object.keys(schema.properties || {});
+
+    if (properties.includes("base")) {
+      console.log(properties);
     }
 
     var defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(function (prop) {
