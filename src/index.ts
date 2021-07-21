@@ -122,6 +122,7 @@ export default class Validator<T> {
      * @param workspaceGenerationMap A map of custom fields to generate when making workspace
      */
     constructor(validSchema: RootSchemaObject, definition?: string, workspaceGenerationMap?: Record<string, () => any>) {
+        console.log("warm validator");
         this.title = definition || validSchema.$comment || validSchema.$id || "Unknown";
         this.rootSchema = validSchema;
         this.workspaceGenerationMap = workspaceGenerationMap || {};
