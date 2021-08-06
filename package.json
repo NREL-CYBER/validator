@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.nrel.gov/CyberSecurity/validator.git"
+    "url": "https://github.com/NREL-CYBER/validator.git"
   },
   "keywords": [
     "validator",
