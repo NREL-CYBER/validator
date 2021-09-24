@@ -127,7 +127,6 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
 
   _defineProperty(this, "workspaceGenerationMap", void 0);
 
-  console.log("warm validator");
   this.title = definition || validSchema.$comment || validSchema.$id || "Unknown";
   this.rootSchema = validSchema;
   this.workspaceGenerationMap = workspaceGenerationMap || {};
@@ -244,11 +243,6 @@ function Validator(validSchema, definition, workspaceGenerationMap) {
     }
 
     var properties = Object.keys(schema.properties || {});
-
-    if (properties.includes("base")) {
-      console.log(properties);
-    }
-
     var defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(function (prop) {
       var _schema$required;
 

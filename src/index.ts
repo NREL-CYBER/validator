@@ -3,6 +3,15 @@ import addFormats from "ajv-formats"
 import { SchemaObject } from "ajv";
 import { v4 } from "uuid"
 
+
+/**
+ * We're now running AJV as a web worker
+ * //TODO Migrate validationWorker to be injected 
+ * and used instead of building a validator on the main thread
+ * ATM we are only using this lib for the types.
+ * however for portability, leveraging the web worker based solution here
+ * would be super nice.
+ */
 class AJVService {
     private static _instance: AJVService;
     public readonly ajv: Ajv
@@ -31,6 +40,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
     allOf?: { not?: string, $ref?: string }[]
     anyOf?: { not?: string, $ref?: string }[]
     type?: string
+    enum?: string[],
     multipleOf?: string;
     minItems?: number;
     properties?: Record<string, PropertyDefinitionRef>
@@ -52,7 +62,7 @@ export interface RootSchemaObject {
     definitions?: Record<string, any>
     properties?: Record<string, any>
     required?: string[]
-    dependencies?: Record<string, string[]>
+    dependentRequired?: Record<string, string[]>
 }
 
 
@@ -65,6 +75,7 @@ export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     pattern?: string,
     $comment?: string
     required?: string[]
+    dependentRequired?: Record<string, string[]>
     additionalProperties?: PropertyDefinitionRef
 }
 
@@ -122,7 +133,6 @@ export default class Validator<T> {
      * @param workspaceGenerationMap A map of custom fields to generate when making workspace
      */
     constructor(validSchema: RootSchemaObject, definition?: string, workspaceGenerationMap?: Record<string, () => any>) {
-        console.log("warm validator");
         this.title = definition || validSchema.$comment || validSchema.$id || "Unknown";
         this.rootSchema = validSchema;
         this.workspaceGenerationMap = workspaceGenerationMap || {};
@@ -142,7 +152,7 @@ export default class Validator<T> {
         if (!existingCompiledValidator) {
             try {
                 AJVService.instance().ajv.addSchema(validSchema);
-            } catch{
+            } catch {
                 AJVService.instance().ajv.addSchema({ ...validSchema, $id: v4() });
             }
         }
@@ -216,9 +226,6 @@ export default class Validator<T> {
                 return {} as unknown as T;
             }
             const properties = Object.keys(schema.properties || {})
-            if (properties.includes("base")) {
-                console.log(properties);
-            }
             const defaulObjectProperties = schema.properties ? Object.keys(schema.properties).map(prop => {
                 const required = schema.required?.includes(prop)
                 const propName = prop;

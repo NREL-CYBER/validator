@@ -17,6 +17,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
         $ref?: string;
     }[];
     type?: string;
+    enum?: string[];
     multipleOf?: string;
     minItems?: number;
     properties?: Record<string, PropertyDefinitionRef>;
@@ -34,7 +35,7 @@ export interface RootSchemaObject {
     definitions?: Record<string, any>;
     properties?: Record<string, any>;
     required?: string[];
-    dependencies?: Record<string, string[]>;
+    dependentRequired?: Record<string, string[]>;
 }
 export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     properties?: Record<string, PropertyDefinitionRef>;
@@ -45,6 +46,7 @@ export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
     pattern?: string;
     $comment?: string;
     required?: string[];
+    dependentRequired?: Record<string, string[]>;
     additionalProperties?: PropertyDefinitionRef;
 }
 /**
