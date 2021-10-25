@@ -33,7 +33,7 @@ export interface PropertyInfo {
     description?: string
 }
 
-export interface PropertyDefinitionRef extends PropertyInfo {
+export interface PropertyDefinitionRef extends PropertyInfo, Record<string, any> {
     $id?: string,
     $ref?: string
     items?: PropertyDefinitionRef | Record<string, PropertyDefinitionRef>,
@@ -52,7 +52,7 @@ export interface PropertyDefinitionRef extends PropertyInfo {
 
 
 
-export interface RootSchemaObject {
+export interface RootSchemaObject extends Record<string, any> {
     $id?: string,
     $comment?: string
     $schema?: string,
@@ -66,7 +66,7 @@ export interface RootSchemaObject {
 }
 
 
-export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo {
+export interface SchemaObjectDefinition extends SchemaObject, PropertyInfo, Record<string, any> {
     properties?: Record<string, PropertyDefinitionRef>
     type?: string
     $id?: string,
